@@ -45,7 +45,7 @@ class Customer(models.Model):
         """
         if not hasattr(self, '_profile_cache'):
             from django.conf import settings
-            if not getattr(settings, 'CUSTOMER_PROFILE_MODULE', False):
+            if not getattr(settings, 'CUSTOMER_PROFILE_MODEL', False):
                 raise SiteProfileNotAvailable
             try:
                 app_label, model_name = settings.CUSTOMER_PROFILE_MODULE.split('.')

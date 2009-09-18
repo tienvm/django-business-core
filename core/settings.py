@@ -76,4 +76,11 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'customer',
+    'invoice',
+    'dblogger',
+    'crm',
+    'hosting',
 )
+
+CUSTOMER_PROFILE_FORM='hosting.models.CustomerProfileForm'

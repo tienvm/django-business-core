@@ -14,20 +14,36 @@ from django.db import transaction
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login
 from django.core.mail import send_mass_mail, send_mail
+from django.utils.importlib import import_module
 
 from dblogger.models import LogEntry
+from customer.forms import AddCustomerForm
+from django.conf import settings
 
 @login_required
 def list(request):
     pass
 
-@login_required
+#@login_required
 @transaction.commit_on_success
 def create(request):
     if request.method == 'POST':
         pass
     else:
-        pass
+        if getattr(settings, 'CUSTOMER_PROFILE_FORM', False):
+            module_string = settings.CUSTOMER_PROFILE_FORM.split('.')
+            form_name = module_string[-1]
+            module_name = '.'.join(module_string[0:-1])
+            
+            profile_module = import_module(module_name)
+            FormClass = getattr(profile_module, form_name)
+            profile_form = FormClass()
+        customer_form = AddCustomerForm()
+        return render_to_response(
+            'customer/create.html',
+            locals(),
+            context_instance=RequestContext(request),
+        )
     
 @login_required
 @transaction.commit_on_success

@@ -1,0 +1,11 @@
+syntax: glob
+Thumbs.db
+
+*.pyc
+*~
+._.DS_Store
+.DS_Store
+*.pyo
+.git
+data
+*.orig

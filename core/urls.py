@@ -7,6 +7,7 @@ from django.conf.urls.defaults import *
 urlpatterns = patterns('',
     # Example:
     # (r'^core/', include('core.foo.urls')),
+    (r'^customers/', include('customer.urls')),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:
@@ -14,4 +15,8 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # (r'^admin/', include(admin.site.urls)),
+    
+    ####################### AUTH URLS #################
+    (r'^accounts/login', 'django.contrib.auth.views.login'),
+    (r'^accounts/logout', 'django.contrib.auth.views.logout'),
 )
