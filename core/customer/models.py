@@ -13,7 +13,7 @@ class Location(models.Model):
         return "%s\n%s, %s %s" % \
             (self.address, self.city, self.state, self.postal_code)
         
-class BusinessContact(models.Model):
+class CustomerContact(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     phone = models.CharField(max_length=50)
@@ -28,12 +28,30 @@ class BusinessContact(models.Model):
         else:
             return "%s %s" % (self.first_name, self.last_name)
         
-class Business(models.Model):
+class Customer(models.Model):
     name = models.CharField(max_length=50)
-    contacts = models.ManyToManyField(BusinessContact)
+    contacts = models.ManyToManyField(CustomerContact)
     locations = models.ManyToManyField(Location)
+    deleted = models.BooleanField(default=False)
     parent = models.ForeignKey('self')
     
     def __unicode__(self):
         return self.name
     
+    def get_profile(self):
+        """
+        Returns site-specific profile for this Customer. Raises
+        SiteProfileNotAvailable if this site does not allow profiles.
+        """
+        if not hasattr(self, '_profile_cache'):
+            from django.conf import settings
+            if not getattr(settings, 'CUSTOMER_PROFILE_MODULE', False):
+                raise SiteProfileNotAvailable
+            try:
+                app_label, model_name = settings.CUSTOMER_PROFILE_MODULE.split('.')
+                model = models.get_model(app_label, model_name)
+                self._profile_cache = model._default_manager.get(customer__id__exact=self.id)
+                self._profile_cache.customer = self
+            except (ImportError, ImproperlyConfigured):
+                raise SiteProfileNotAvailable
+        return self._profile_cache
