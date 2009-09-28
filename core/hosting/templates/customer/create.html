@@ -1,0 +1,20 @@
+{% extends 'hosting/base.html' %}
+{% block content %}
+<div id="content">
+    <div class="post">
+        <h2 class="title"><a href="#">Add a Customer  </a></h2>
+        <p class="meta">Posted by <a href="#">Someone</a> on March 10, 2008
+            &nbsp;&bull;&nbsp; <a href="#" class="comments">Comments (64)</a> &nbsp;&bull;&nbsp; <a href="#" class="permalink">Full article</a></p>
+        <div class="entry">
+            <form action="." method="post">
+            <table>
+            {{ customer_form.as_table }}
+            {{ profile_form.as_table }}
+            </table>
+            <input class="links" type="submit" value="Save" />
+        </form>
+        </div>
+    </div>
+<div style="clear: both;">&nbsp;</div>
+</div>
+{% endblock %}

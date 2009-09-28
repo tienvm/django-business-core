@@ -14,11 +14,7 @@ class Location(models.Model):
             (self.address, self.city, self.state, self.postal_code)
         
 class CustomerContact(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=50)
-    email = models.CharField(max_length=50)
-    location = models.ForeignKey(Location)
+    location = models.ForeignKey(Location, null=True)
     user = models.ForeignKey(User, unique=True, null=True, blank=True)
     
     def __unicode__(self):
@@ -27,13 +23,23 @@ class CustomerContact(models.Model):
                 (self.user.username, self.user.first_name, self.user.last_name)
         else:
             return "%s %s" % (self.first_name, self.last_name)
-        
+
+class CustomerManager(models.Manager):
+    
+    def add_customer(self, form):
+        customer = self.model(
+            name = form['name']
+        )
+        customer.save()
+        return customer
+    
 class Customer(models.Model):
     name = models.CharField(max_length=50)
     contacts = models.ManyToManyField(CustomerContact)
     locations = models.ManyToManyField(Location)
     deleted = models.BooleanField(default=False)
-    parent = models.ForeignKey('self')
+    parent = models.ForeignKey('self', null=True)
+    objects = CustomerManager()
     
     def __unicode__(self):
         return self.name
@@ -55,3 +61,4 @@ class Customer(models.Model):
             except (ImportError, ImproperlyConfigured):
                 raise SiteProfileNotAvailable
         return self._profile_cache
+    

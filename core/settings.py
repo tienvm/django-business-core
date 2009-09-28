@@ -1,5 +1,6 @@
 # Django settings for core project.
-
+import os.path
+PROJECT_PATH = os.path.abspath('%s' % os.path.dirname(__file__))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -35,12 +36,12 @@ USE_I18N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = '%s/hosting/media/' % PROJECT_PATH
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/site-media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -76,11 +77,13 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'hosting',
     'customer',
     'invoice',
     'dblogger',
     'crm',
-    'hosting',
+    'south',
 )
 
 CUSTOMER_PROFILE_FORM='hosting.models.CustomerProfileForm'
+CUSTOMER_PROFILE_MODEL='hosting.CustomerProfile'
