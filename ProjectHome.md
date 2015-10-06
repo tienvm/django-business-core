@@ -1,0 +1,1 @@
+The project will contain a core set of at least 3 pluggable django apps that together create the basis for a broad set of small business management apps.  IE, law office management software, property management software, dental/medical office management software, etc.
